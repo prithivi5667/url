@@ -7,7 +7,7 @@ import cors from "cors";
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const url = "mongodb://localhost/urlshortener";
+const url = "mongodb+srv://prithivi:prithivi@cluster0.f5qy4.mongodb.net/urlshort?retryWrites=true&w=majority";
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 const con = mongoose.connection;
@@ -21,4 +21,11 @@ app.use("/", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server connected @ ${PORT}`);
+
+  app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
 });
